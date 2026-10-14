@@ -38,6 +38,17 @@ DOCS = {
     ]),
 }
 
+FILLER_TEXT = (
+    "The parties acknowledge that this clause is included for general administrative purposes "
+    "and does not modify any other provision of this document. Interpretation, headings and "
+    "notices are governed by the definitions schedule."
+)
+FILLER_COUNT = {
+    "acme_cloud_msa.pdf": 14,
+    "northwind_vendor_security_policy.pdf": 22,
+    "fictional_data_protection_act_excerpt.pdf": 10,
+}
+
 # issue id -> (type, severity, [(file, section), ...])
 ISSUES = {
     "ISS-001": ("sla_mismatch", "High", [("acme_cloud_msa.pdf", "8.2"), ("northwind_vendor_security_policy.pdf", "4.1")]),
@@ -80,7 +91,9 @@ def ref(page_index, f, s):
 if __name__ == "__main__":
     idx = {}
     for fname, (title, secs) in DOCS.items():
-        render(fname, title, secs, idx)
+        filler= [(f"0.{1}","General Provisions", FILLER_TEXT)
+                 for i in range(1, FILLER_COUNT.get(fname,0)+1)]
+        render(fname, title, filler + secs, idx)
     truth = {
         "issues": [
             {"id": i, "type": t, "severity": sev, "evidence": [ref(idx, f, s) for f, s in ev]}

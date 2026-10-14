@@ -8,12 +8,12 @@
         {
           "document": "acme_cloud_msa.pdf",
           "section": "8.2",
-          "page": 1
+          "page": 2
         },
         {
           "document": "northwind_vendor_security_policy.pdf",
           "section": "4.1",
-          "page": 1
+          "page": 3
         }
       ]
     },
@@ -25,17 +25,17 @@
         {
           "document": "acme_cloud_msa.pdf",
           "section": "9.1",
-          "page": 1
+          "page": 2
         },
         {
           "document": "northwind_vendor_security_policy.pdf",
           "section": "5.3",
-          "page": 1
+          "page": 3
         },
         {
           "document": "fictional_data_protection_act_excerpt.pdf",
           "section": "12",
-          "page": 1
+          "page": 2
         }
       ]
     },
@@ -47,7 +47,7 @@
         {
           "document": "acme_cloud_msa.pdf",
           "section": "12.1",
-          "page": 1
+          "page": 2
         },
         {
           "document": "acme_insurance_certificate.pdf",
@@ -57,7 +57,7 @@
         {
           "document": "northwind_vendor_security_policy.pdf",
           "section": "6.2",
-          "page": 1
+          "page": 3
         }
       ]
     },
@@ -74,7 +74,7 @@
         {
           "document": "acme_cloud_msa.pdf",
           "section": "4.2",
-          "page": 1
+          "page": 2
         }
       ]
     },
@@ -91,7 +91,7 @@
         {
           "document": "acme_cloud_msa.pdf",
           "section": "11.3",
-          "page": 1
+          "page": 2
         }
       ]
     }
@@ -104,12 +104,12 @@
         {
           "document": "acme_cloud_msa.pdf",
           "section": "10.4",
-          "page": 1
+          "page": 2
         },
         {
           "document": "northwind_vendor_security_policy.pdf",
           "section": "7.1",
-          "page": 1
+          "page": 3
         }
       ]
     }
