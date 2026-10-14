@@ -1,0 +1,117 @@
+{
+  "issues": [
+    {
+      "id": "ISS-001",
+      "type": "sla_mismatch",
+      "severity": "High",
+      "evidence": [
+        {
+          "document": "acme_cloud_msa.pdf",
+          "section": "8.2",
+          "page": 1
+        },
+        {
+          "document": "northwind_vendor_security_policy.pdf",
+          "section": "4.1",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "id": "ISS-002",
+      "type": "breach_notice_mismatch",
+      "severity": "High",
+      "evidence": [
+        {
+          "document": "acme_cloud_msa.pdf",
+          "section": "9.1",
+          "page": 1
+        },
+        {
+          "document": "northwind_vendor_security_policy.pdf",
+          "section": "5.3",
+          "page": 1
+        },
+        {
+          "document": "fictional_data_protection_act_excerpt.pdf",
+          "section": "12",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "id": "ISS-003",
+      "type": "insurance_shortfall",
+      "severity": "Medium",
+      "evidence": [
+        {
+          "document": "acme_cloud_msa.pdf",
+          "section": "12.1",
+          "page": 1
+        },
+        {
+          "document": "acme_insurance_certificate.pdf",
+          "section": "1.1",
+          "page": 1
+        },
+        {
+          "document": "northwind_vendor_security_policy.pdf",
+          "section": "6.2",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "id": "ISS-004",
+      "type": "insurance_expiry",
+      "severity": "Medium",
+      "evidence": [
+        {
+          "document": "acme_insurance_certificate.pdf",
+          "section": "2.1",
+          "page": 1
+        },
+        {
+          "document": "acme_cloud_msa.pdf",
+          "section": "4.2",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "id": "ISS-005",
+      "type": "payment_terms_mismatch",
+      "severity": "Low",
+      "evidence": [
+        {
+          "document": "acme_invoice_0412.pdf",
+          "section": "3",
+          "page": 1
+        },
+        {
+          "document": "acme_cloud_msa.pdf",
+          "section": "11.3",
+          "page": 1
+        }
+      ]
+    }
+  ],
+  "decoys": [
+    {
+      "id": "DEC-001",
+      "type": "consistent_access_review",
+      "evidence": [
+        {
+          "document": "acme_cloud_msa.pdf",
+          "section": "10.4",
+          "page": 1
+        },
+        {
+          "document": "northwind_vendor_security_policy.pdf",
+          "section": "7.1",
+          "page": 1
+        }
+      ]
+    }
+  ]
+}
