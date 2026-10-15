@@ -5,7 +5,7 @@ import numpy as np
 import pymupdf
 
 SRC, DST = Path("data/raw"), Path("data/scans")
-SCAN_FILES = ["acme_insurance_certificate.pdf", "acme_invoice_0412.pdf"]
+SCAN_FILES = ["acme_insurance_certificate.pdf", "acme_invoice_0412.pdf", "acme_sla_schedule.pdf"]
 rng = np.random.default_rng(42)
 
 

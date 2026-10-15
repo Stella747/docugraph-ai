@@ -1,10 +1,11 @@
 import re
 from dataclasses import dataclass
 from pathlib import Path
-
+from docugraph.ingest.preprocess import clean_binarize, deskew, has_table_structure, page_to_bgr
 import pymupdf
 
 HEADING_RE = re.compile(r"^(\d+(?:\.\d+)*)\s+(.+)$")
+MD_HEADING_RE = re.compile(r"^(\d+(?:\.\d+)*)\s*([A-Za-z].*)$")
 
 
 @dataclass
@@ -69,13 +70,36 @@ def _ocr_lines(page: pymupdf.Page) -> list[Line]:
 
     return [Line(page.number + 1, t, _looks_like_heading(t)) for t in ocr_page_lines(page)]
 
+def _markdown_to_lines(md: str, page_no: int) -> list[Line]:
+    lines = []
+    for block in md.split("\n\n"):
+        block = block.strip()
+        if not block:
+            continue
+        if block.startswith("|"):  # table: collapse Docling's column padding
+            lines.append(Line(page_no, re.sub(r" {2,}", " ", block), False))
+        elif block.startswith("#"):
+            m = MD_HEADING_RE.match(block.lstrip("#").strip())
+            if m:  # headings without a section number (document titles) are skipped
+                lines.append(Line(page_no, f"{m.group(1)} {m.group(2)}", True))
+        else:
+            lines.append(Line(page_no, " ".join(block.split()), False))
+    return lines
+
+
+def _scanned_lines(page: pymupdf.Page) -> list[Line]:
+    cleaned = deskew(clean_binarize(page_to_bgr(page)))
+    if has_table_structure(cleaned):
+        from docugraph.ingest.docling_page import docling_markdown
+        return _markdown_to_lines(docling_markdown(cleaned), page.number + 1)
+    return _ocr_lines(page)
 
 def parse_pdf(path: Path) -> list[Section]:
     lines: list[Line] = []
     with pymupdf.open(path) as doc:
         for page in doc:
             has_text_layer = bool(page.get_text().strip())
-            lines += _digital_lines(page) if has_text_layer else _ocr_lines(page)
+            lines += _digital_lines(page) if has_text_layer else _scanned_lines(page)
 
     sections: list[Section] = []
     current: Section | None = None
