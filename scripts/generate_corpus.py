@@ -36,6 +36,9 @@ DOCS = {
         ("1", "Invoice Details", "Invoice date: 1 March 2026. Amount due: USD 48,200 for cloud services, February 2026."),
         ("3", "Payment Terms", "Payment is due within 30 days of the invoice date (Net 30)."),
     ]),
+        "acme_sla_schedule.pdf": ("Schedule A - Service Levels - Acme Cloud Ltd", [
+        ("1.1", "Response Times", "Response and resolution targets by incident severity are set out in the table below."),
+    ]),
 }
 
 FILLER_TEXT = (
@@ -59,6 +62,16 @@ ISSUES = {
 }
 DECOYS = {"DEC-001": ("consistent_access_review", [("acme_cloud_msa.pdf", "10.4"), ("northwind_vendor_security_policy.pdf", "7.1")])}
 
+TABLES = {
+    ("acme_sla_schedule.pdf", "1.1"): [
+        ["Severity", "Response time", "Resolution target"],
+        ["Critical", "8 hours", "24 hours"],
+        ["High", "12 hours", "48 hours"],
+        ["Medium", "2 business days", "5 business days"],
+    ],
+}
+ISSUES["ISS-006"] = ("sla_internal_inconsistency", "High",
+                     [("acme_sla_schedule.pdf", "1.1"), ("acme_cloud_msa.pdf", "8.2")])
 
 def render(filename, title, sections, page_index):
     c = canvas.Canvas(str(RAW / filename), pagesize=A4)
@@ -68,8 +81,10 @@ def render(filename, title, sections, page_index):
     c.drawString(margin, y, title)
     y -= 36
     for num, heading, text in sections:
+        rows = TABLES.get((filename, num))
         lines = simpleSplit(text, "Helvetica", 11, w - 2 * margin)
-        if y - (24 + 15 * len(lines)) < margin:
+        need = 24 + 15 * len(lines) + (20 * len(rows) + 14 if rows else 0)
+        if y - need < margin:
             c.showPage()
             page, y = page + 1, h - margin
         c.setFont("Helvetica-Bold", 12)
@@ -79,10 +94,19 @@ def render(filename, title, sections, page_index):
         for line in lines:
             c.drawString(margin, y, line)
             y -= 15
+        if rows:
+            col_w = (w - 2 * margin) / len(rows[0])
+            xs = [margin + i * col_w for i in range(len(rows[0]) + 1)]
+            ys = [y - 4 - 20 * i for i in range(len(rows) + 1)]
+            c.grid(xs, ys)
+            for r, row in enumerate(rows):
+                c.setFont("Helvetica-Bold" if r == 0 else "Helvetica", 10)
+                for ci, cell in enumerate(row):
+                    c.drawString(xs[ci] + 6, ys[r] - 14, cell)
+            y = ys[-1] - 14
         y -= 10
         page_index[(filename, num)] = page
     c.save()
-
 
 def ref(page_index, f, s):
     return {"document": f, "section": s, "page": page_index[(f, s)]}

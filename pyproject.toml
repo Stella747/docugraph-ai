@@ -10,3 +10,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/docugraph"]
+
+[project.optional-dependencies]
+dev = ["pytest"]

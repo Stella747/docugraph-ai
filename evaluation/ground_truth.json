@@ -94,6 +94,23 @@
           "page": 2
         }
       ]
+    },
+    {
+      "id": "ISS-006",
+      "type": "sla_internal_inconsistency",
+      "severity": "High",
+      "evidence": [
+        {
+          "document": "acme_sla_schedule.pdf",
+          "section": "1.1",
+          "page": 1
+        },
+        {
+          "document": "acme_cloud_msa.pdf",
+          "section": "8.2",
+          "page": 2
+        }
+      ]
     }
   ],
   "decoys": [

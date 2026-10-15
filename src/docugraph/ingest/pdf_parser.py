@@ -32,19 +32,36 @@ def _looks_like_heading(text: str) -> bool:
     return len(words) <= 6 and words[0][0].isupper() and not text.endswith(".")
 
 
+def _table_to_markdown(rows) -> str:
+    clean = [[(c or "").replace("\n", " ").strip() for c in r] for r in rows]
+    out = ["| " + " | ".join(clean[0]) + " |", "|" + "---|" * len(clean[0])]
+    out += ["| " + " | ".join(r) + " |" for r in clean[1:]]
+    return "\n".join(out)
+
+
+def _inside(bbox, point) -> bool:
+    return bbox[0] <= point[0] <= bbox[2] and bbox[1] <= point[1] <= bbox[3]
+
+
 def _digital_lines(page: pymupdf.Page) -> list[Line]:
-    out = []
+    tables = page.find_tables().tables
+    items: list[tuple[float, Line]] = []
+    for t in tables:
+        items.append((t.bbox[1], Line(page.number + 1, _table_to_markdown(t.extract()), False)))
     for block in page.get_text("dict")["blocks"]:
         for line in block.get("lines", []):
             spans = line["spans"]
             text = "".join(s["text"] for s in spans).strip()
             if not text:
                 continue
+            x0, y0, x1, y1 = line["bbox"]
+            if any(_inside(t.bbox, ((x0 + x1) / 2, (y0 + y1) / 2)) for t in tables):
+                continue  # this text belongs to a table, already captured
             bold = all("Bold" in s["font"] for s in spans)
             if bold and max(s["size"] for s in spans) > 13:  # document title
                 continue
-            out.append(Line(page.number + 1, text, bold and bool(HEADING_RE.match(text))))
-    return out
+            items.append((y0, Line(page.number + 1, text, bold and bool(HEADING_RE.match(text)))))
+    return [ln for _, ln in sorted(items, key=lambda it: it[0])]
 
 
 def _ocr_lines(page: pymupdf.Page) -> list[Line]:
