@@ -1,0 +1,20 @@
+[
+  {"id": "P1", "type": "paraphrase", "query": "How quickly must the supplier react when something breaks badly?",
+   "expected": [["acme_cloud_msa.pdf", "8.2"], ["northwind_vendor_security_policy.pdf", "4.1"]]},
+  {"id": "P2", "type": "paraphrase", "query": "Deadline for telling us about leaked customer information",
+   "expected": [["acme_cloud_msa.pdf", "9.1"], ["northwind_vendor_security_policy.pdf", "5.3"], ["fictional_data_protection_act_excerpt.pdf", "12"]]},
+  {"id": "P3", "type": "paraphrase", "query": "Minimum financial protection the vendor must carry against hacking losses",
+   "expected": [["northwind_vendor_security_policy.pdf", "6.2"], ["acme_cloud_msa.pdf", "12.1"], ["acme_insurance_certificate.pdf", "1.1"]]},
+  {"id": "E1", "type": "exact", "query": "Net 45",
+   "expected": [["acme_cloud_msa.pdf", "11.3"]]},
+  {"id": "E2", "type": "exact", "query": "USD 5,000,000",
+   "expected": [["northwind_vendor_security_policy.pdf", "6.2"]]},
+  {"id": "E3", "type": "exact", "query": "72 hours",
+   "expected": [["acme_cloud_msa.pdf", "9.1"]]},
+  {"id": "E4", "type": "exact", "query": "Net 30",
+   "expected": [["acme_invoice_0412.pdf", "3"]]},
+  {"id": "T1", "type": "table", "query": "What is the resolution target for High severity incidents?",
+   "expected": [["acme_sla_schedule.pdf", "1.1"]]},
+  {"id": "M1", "type": "multihop", "query": "Does the vendor's insurance cover the whole contract term?",
+   "expected": [["acme_insurance_certificate.pdf", "2.1"], ["acme_cloud_msa.pdf", "4.2"]]}
+]
