@@ -2,6 +2,7 @@ import re
 
 from docugraph.index.embedder import embed_query
 from rank_bm25 import BM25Okapi
+from sentence_transformers import CrossEncoder
 
 _bm25, _bm25_rows = None, None
 
@@ -51,6 +52,19 @@ def _bm25_search(conn, query: str, k: int):
     top = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
     return [_bm25_rows[i][:5] for i in top if scores[i] > 0]
 
+_ce = None
+
+
+def _rerank(conn, query: str, rows: list, k: int):
+    global _ce
+    if _ce is None:
+        _ce = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2", device="cpu")
+    ids = [r[0] for r in rows]
+    texts = dict(conn.execute("SELECT id, text FROM chunks WHERE id = ANY(%s)", (ids,)).fetchall())
+    scores = _ce.predict([(query, f"{r[4]}: {texts[r[0]]}") for r in rows])
+    order = sorted(range(len(rows)), key=lambda i: scores[i], reverse=True)[:k]
+    return [rows[i] for i in order]
+
 def search(conn, query: str, mode: str = "hybrid", k: int = 5, pool: int = 20) -> list[dict]:
     if mode == "vector":
         hits = _vector(conn, query, k)
@@ -60,6 +74,11 @@ def search(conn, query: str, mode: str = "hybrid", k: int = 5, pool: int = 20) -
         hits = _bm25_search(conn, query, k)
     elif mode == "hybrid_bm25":
         hits = _rrf([_vector(conn, query, pool), _bm25_search(conn, query, pool)], k)
+    elif mode == "vector_rerank":
+        hits = _rerank(conn, query, _vector(conn, query, pool), k)
+    elif mode == "hybrid_rerank":
+        fused = _rrf([_vector(conn, query, pool), _bm25_search(conn, query, pool)], pool)
+        hits = _rerank(conn, query, fused, k)
     else:
         hits = _rrf([_vector(conn, query, pool), _keyword(conn, query, pool)], k)
     return [{"document": h[1], "section": h[2], "page": h[3], "heading": h[4]} for h in hits]

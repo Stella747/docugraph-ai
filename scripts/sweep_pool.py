@@ -19,9 +19,12 @@ def mean_recall(conn, mode, pool):
     return {t: sum(v) / len(v) for t, v in by_type.items()}
 
 
+CONFIGS = [("vector", 20), ("bm25", 20), ("hybrid_bm25", 3),
+           ("vector_rerank", 20), ("hybrid_rerank", 10), ("hybrid_rerank", 20)]
+
 with connect() as conn:
-    print(f"{'config':18}" + "".join(f"{t:>12}" for t in TYPES))
-    configs = [("vector", 20), ("keyword", 20), ("bm25", 20), ("hybrid", 3)] + [("hybrid_bm25", p) for p in (3, 5, 10, 20)]
-    for mode, pool in configs:
+    print(f"{'config':20}" + "".join(f"{t:>12}" for t in TYPES))
+    for mode, pool in CONFIGS:
         r = mean_recall(conn, mode, pool)
-        label = f"{mode} pool={pool}" if mode.startswith("hybrid") else mode
+        label = f"{mode} pool={pool}"
+        print(f"{label:20}" + "".join(f"{r[t]:12.2f}" for t in TYPES), flush=True)
