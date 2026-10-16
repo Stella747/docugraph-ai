@@ -65,7 +65,7 @@ def _rerank(conn, query: str, rows: list, k: int):
     order = sorted(range(len(rows)), key=lambda i: scores[i], reverse=True)[:k]
     return [rows[i] for i in order]
 
-def search(conn, query: str, mode: str = "hybrid", k: int = 5, pool: int = 20) -> list[dict]:
+def search(conn, query: str, mode: str = "hybrid_rerank", k: int = 5, pool: int = 20) -> list[dict]:
     if mode == "vector":
         hits = _vector(conn, query, k)
     elif mode == "keyword":
