@@ -1,0 +1,108 @@
+[
+  {
+    "id": "H1",
+    "type": "paraphrase",
+    "query": "How frequently must privileged access to systems be reviewed?",
+    "expected": [
+      ["acme_cloud_msa.pdf", "10.4"],
+      ["northwind_vendor_security_policy.pdf", "7.1"]
+    ]
+  },
+  {
+    "id": "H2",
+    "type": "paraphrase",
+    "query": "What are the rules regarding notification when a security or personal data breach occurs?",
+    "expected": [
+      ["acme_cloud_msa.pdf", "9.1"],
+      ["fictional_data_protection_act_excerpt.pdf", "12"],
+      ["northwind_vendor_security_policy.pdf", "5.3"]
+    ]
+  },
+  {
+    "id": "H3",
+    "type": "paraphrase",
+    "query": "What cyber liability insurance coverage is required for vendors?",
+    "expected": [
+      ["acme_cloud_msa.pdf", "12.1"],
+      ["acme_insurance_certificate.pdf", "1.1"],
+      ["northwind_vendor_security_policy.pdf", "6.2"]
+    ]
+  },
+  {
+    "id": "H4",
+    "type": "paraphrase",
+    "query": "How quickly must a vendor respond to critical operational incidents?",
+    "expected": [
+      ["acme_cloud_msa.pdf", "8.2"],
+      ["acme_sla_schedule.pdf", "1.1"],
+      ["northwind_vendor_security_policy.pdf", "4.1"]
+    ]
+  },
+  {
+    "id": "H5",
+    "type": "exact",
+    "query": "Net 45",
+    "expected": [
+      ["acme_cloud_msa.pdf", "11.3"]
+    ]
+  },
+  {
+    "id": "H6",
+    "type": "exact",
+    "query": "USD 2,000,000",
+    "expected": [
+      ["acme_cloud_msa.pdf", "12.1"],
+      ["acme_insurance_certificate.pdf", "1.1"]
+    ]
+  },
+  {
+    "id": "H7",
+    "type": "exact",
+    "query": "72 hours",
+    "expected": [
+      ["acme_cloud_msa.pdf", "9.1"]
+    ]
+  },
+  {
+    "id": "H8",
+    "type": "exact",
+    "query": "1 January 2026",
+    "expected": [
+      ["acme_cloud_msa.pdf", "4.2"]
+    ]
+  },
+  {
+    "id": "H9",
+    "type": "table",
+    "query": "What are the response and resolution targets by incident severity level?",
+    "expected": [
+      ["acme_sla_schedule.pdf", "1.1"]
+    ]
+  },
+  {
+    "id": "H10",
+    "type": "table",
+    "query": "What is the specific resolution target for Critical incidents under the SLA?",
+    "expected": [
+      ["acme_sla_schedule.pdf", "1.1"]
+    ]
+  },
+  {
+    "id": "H11",
+    "type": "multihop",
+    "query": "Does the payment term in Invoice 0412 align with the Master Services Agreement payment terms?",
+    "expected": [
+      ["acme_cloud_msa.pdf", "11.3"],
+      ["acme_invoice_0412.pdf", "3"]
+    ]
+  },
+  {
+    "id": "H12",
+    "type": "multihop",
+    "query": "Does Acme Cloud's current cyber liability insurance certificate satisfy Northwind's vendor security policy requirement?",
+    "expected": [
+      ["acme_insurance_certificate.pdf", "1.1"],
+      ["northwind_vendor_security_policy.pdf", "6.2"]
+    ]
+  }
+]
