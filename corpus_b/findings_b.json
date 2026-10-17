@@ -1,0 +1,102 @@
+[
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "breach_notice_hours",
+    "evidence": [
+      {
+        "document": "b_security_policy.pdf",
+        "bound": "max",
+        "section": "4.1",
+        "page": 2,
+        "value": "24"
+      },
+      {
+        "document": "b_services_agreement.pdf",
+        "bound": "max",
+        "section": "6.1",
+        "page": 2,
+        "value": "96"
+      }
+    ]
+  },
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "breach_notice_hours",
+    "evidence": [
+      {
+        "document": "b_privacy_regulation_excerpt.pdf",
+        "bound": "max",
+        "section": "9",
+        "page": 1,
+        "value": "12"
+      },
+      {
+        "document": "b_services_agreement.pdf",
+        "bound": "max",
+        "section": "6.1",
+        "page": 2,
+        "value": "96"
+      }
+    ]
+  },
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "incident_response_hours",
+    "evidence": [
+      {
+        "document": "b_security_policy.pdf",
+        "bound": "max",
+        "section": "3.1",
+        "page": 2,
+        "value": "2"
+      },
+      {
+        "document": "b_services_agreement.pdf",
+        "bound": "max",
+        "section": "5.2",
+        "page": 2,
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "rule": "coverage_gap",
+    "attribute": "insurance_coverage_gap",
+    "evidence": [
+      {
+        "document": "b_insurance_certificate.pdf",
+        "bound": "exact",
+        "section": "2.1",
+        "page": 1,
+        "value": "2028-03-31"
+      },
+      {
+        "document": "b_services_agreement.pdf",
+        "bound": "exact",
+        "section": "2.1",
+        "page": 2,
+        "value": "2029-12-31"
+      }
+    ]
+  },
+  {
+    "rule": "invoice_vs_contract",
+    "attribute": "payment_terms_days",
+    "evidence": [
+      {
+        "document": "b_invoice.pdf",
+        "bound": "max",
+        "section": "2",
+        "page": 1,
+        "value": "15"
+      },
+      {
+        "document": "b_services_agreement.pdf",
+        "bound": "max",
+        "section": "8.1",
+        "page": 2,
+        "value": "60"
+      }
+    ]
+  }
+]

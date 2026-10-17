@@ -1,0 +1,166 @@
+{
+  "issues": [
+    {
+      "id": "ISS-B1",
+      "type": "response_mismatch",
+      "severity": "High",
+      "evidence": [
+        {
+          "document": "b_services_agreement.pdf",
+          "section": "5.2",
+          "page": 2
+        },
+        {
+          "document": "b_security_policy.pdf",
+          "section": "3.1",
+          "page": 2
+        }
+      ]
+    },
+    {
+      "id": "ISS-B2",
+      "type": "breach_notice_mismatch",
+      "severity": "High",
+      "evidence": [
+        {
+          "document": "b_services_agreement.pdf",
+          "section": "6.1",
+          "page": 2
+        },
+        {
+          "document": "b_security_policy.pdf",
+          "section": "4.1",
+          "page": 2
+        },
+        {
+          "document": "b_privacy_regulation_excerpt.pdf",
+          "section": "9",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "id": "ISS-B3",
+      "type": "insurance_shortfall",
+      "severity": "Medium",
+      "evidence": [
+        {
+          "document": "b_services_agreement.pdf",
+          "section": "7.2",
+          "page": 2
+        },
+        {
+          "document": "b_insurance_certificate.pdf",
+          "section": "1.1",
+          "page": 1
+        },
+        {
+          "document": "b_security_policy.pdf",
+          "section": "4.4",
+          "page": 3
+        }
+      ]
+    },
+    {
+      "id": "ISS-B4",
+      "type": "insurance_expiry",
+      "severity": "Medium",
+      "evidence": [
+        {
+          "document": "b_insurance_certificate.pdf",
+          "section": "2.1",
+          "page": 1
+        },
+        {
+          "document": "b_services_agreement.pdf",
+          "section": "2.1",
+          "page": 2
+        }
+      ]
+    },
+    {
+      "id": "ISS-B5",
+      "type": "payment_terms_mismatch",
+      "severity": "Low",
+      "evidence": [
+        {
+          "document": "b_invoice.pdf",
+          "section": "2",
+          "page": 1
+        },
+        {
+          "document": "b_services_agreement.pdf",
+          "section": "8.1",
+          "page": 2
+        }
+      ]
+    },
+    {
+      "id": "ISS-B6",
+      "type": "priority1_vs_critical",
+      "severity": "High",
+      "evidence": [
+        {
+          "document": "b_services_agreement.pdf",
+          "section": "5.3",
+          "page": 2
+        },
+        {
+          "document": "b_security_policy.pdf",
+          "section": "3.2",
+          "page": 2
+        }
+      ]
+    }
+  ],
+  "decoys": [
+    {
+      "id": "DEC-B1",
+      "type": "compliant_high_response",
+      "evidence": [
+        {
+          "document": "b_support_schedule.pdf",
+          "section": "1.1",
+          "page": 1
+        },
+        {
+          "document": "b_security_policy.pdf",
+          "section": "3.3",
+          "page": 2
+        }
+      ]
+    },
+    {
+      "id": "DEC-B2",
+      "type": "compliant_high_resolution",
+      "evidence": [
+        {
+          "document": "b_support_schedule.pdf",
+          "section": "1.1",
+          "page": 1
+        },
+        {
+          "document": "b_security_policy.pdf",
+          "section": "3.4",
+          "page": 2
+        }
+      ]
+    },
+    {
+      "id": "DEC-B3",
+      "type": "compliant_medium_response",
+      "evidence": [
+        {
+          "document": "b_support_schedule.pdf",
+          "section": "1.1",
+          "page": 1
+        },
+        {
+          "document": "b_security_policy.pdf",
+          "section": "3.5",
+          "page": 2
+        }
+      ]
+    }
+  ]
+}
