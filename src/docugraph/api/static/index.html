@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocuGraph AI</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 980px; margin: 24px auto; padding: 0 16px; color: #1b1f23; }
+  h1 { margin-bottom: 4px; } .sub { color: #57606a; margin-top: 0; }
+  .card { border: 1px solid #d0d7de; border-radius: 8px; padding: 14px 16px; margin: 14px 0; }
+  .badge { font-size: 12px; padding: 2px 8px; border-radius: 10px; margin-left: 6px; color: #fff; }
+  .High { background: #cf222e; } .Medium { background: #bc4c00; } .Low { background: #6e7781; }
+  .warn { background: #9a6700; } .ok { background: #1a7f37; }
+  blockquote { margin: 6px 0; padding: 4px 10px; border-left: 3px solid #d0d7de; color: #424a53; font-size: 14px; }
+  textarea, input[type=text] { width: 100%; box-sizing: border-box; padding: 6px; margin: 6px 0; font: inherit; }
+  button { padding: 6px 12px; margin-right: 6px; cursor: pointer; }
+  #cy { height: 300px; border: 1px solid #d0d7de; border-radius: 8px; }
+  .note { font-size: 13px; color: #57606a; }
+</style>
+</head>
+<body>
+<h1>DocuGraph AI</h1>
+<p class="sub">Document conflicts found by rules over an extracted knowledge graph, with evidence and human review.</p>
+
+<h2>Conflict graph</h2>
+<div id="cy"></div>
+
+<h2>Findings</h2>
+<div id="findings">Loading…</div>
+
+<h2>Ask a question</h2>
+<input type="text" id="q" placeholder="e.g. Which commitments fall short of the security policy?">
+<button id="askBtn">Ask</button>
+<div id="answer"></div>
+
+<script>
+function el(tag, attrs, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === "class") n.className = v; else if (k.startsWith("on")) n[k] = v; else n.setAttribute(k, v);
+  }
+  for (const kid of kids) n.append(kid);
+  return n;
+}
+const COLORS = { High: "#cf222e", Medium: "#bc4c00", Low: "#6e7781" };
+
+async function loadGraph() {
+  const g = await (await fetch("/api/graph")).json();
+  cytoscape({
+    container: document.getElementById("cy"),
+    elements: [...g.nodes, ...g.edges],
+    layout: { name: "circle" },
+    style: [
+      { selector: "node", style: { label: "data(label)", "font-size": 10, "background-color": "#0969da", "text-wrap": "wrap", "text-max-width": 110 } },
+      { selector: "edge", style: { label: "data(label)", "font-size": 8, "curve-style": "bezier", width: 2,
+          "line-color": ele => COLORS[ele.data("severity")] || "#999" } },
+    ],
+  });
+}
+
+async function review(id, decision, note, edited) {
+  await fetch("/api/review", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ finding_id: id, decision, note, edited_text: edited }) });
+  loadFindings();
+}
+
+async function loadFindings() {
+  const box = document.getElementById("findings");
+  const res = await fetch("/api/report");
+  if (!res.ok) { box.textContent = (await res.json()).detail; return; }
+  const items = await res.json();
+  box.replaceChildren(...items.map(f => {
+    const note = el("textarea", { rows: 2, placeholder: "Reviewer note, or an edited explanation" });
+    if (f.review) note.value = f.review.edited_text || f.review.note || "";
+    const status = f.review ? `Reviewed: ${f.review.decision}` : "Not reviewed";
+    return el("div", { class: "card" },
+      el("strong", {}, f.attribute),
+      el("span", { class: "badge " + f.severity }, f.severity),
+      el("span", { class: "badge " + (f.verified ? "ok" : "warn") }, f.verified ? "numbers verified" : "template text"),
+      el("p", {}, f.explanation),
+      el("p", {}, el("strong", {}, "Recommended action: "), f.recommended_action),
+      ...f.evidence.map(e => el("blockquote", {}, `${e.document}, section ${e.section}, page ${e.page}: "${e.text}"`)),
+      note,
+      el("button", { onclick: () => review(f.id, "accept", note.value, "") }, "Accept"),
+      el("button", { onclick: () => review(f.id, "reject", note.value, "") }, "Reject"),
+      el("button", { onclick: () => review(f.id, "edit", "", note.value) }, "Save edit"),
+      el("span", { class: "note" }, status));
+  }));
+}
+
+document.getElementById("askBtn").onclick = async () => {
+  const out = document.getElementById("answer");
+  out.textContent = "Thinking… (a local model can take 10 to 40 seconds)";
+  const res = await fetch("/api/ask", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question: document.getElementById("q").value }) });
+  if (!res.ok) { out.textContent = (await res.json()).detail; return; }
+  const r = await res.json();
+  const label = r.source === "rules"
+    ? "Related conflicts found by the rule engine. This may not answer your question."
+    : "AI-generated answer from a small local model. Verify it against the cited clauses.";
+  out.replaceChildren(
+    el("p", {}, r.found ? r.answer : "Not found in the documents."),
+    el("p", { class: "note" }, label),
+    ...r.citations.map(c => el("blockquote", {}, `[${c.n}] ${c.document}, section ${c.section}, page ${c.page}: "${c.text}"`)));
+};
+
+loadGraph();
+loadFindings();
+</script>
+</body>
+</html>
