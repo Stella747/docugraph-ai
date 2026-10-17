@@ -2,7 +2,7 @@
 name = "docugraph"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = ["pymupdf", "reportlab", "numpy", "opencv-python-headless", "rapidocr", "onnxruntime", "docling", "psycopg[binary]", "pgvector", "sentence-transformers", "python-dotenv","rank-bm25","ollama"]
+dependencies = ["pymupdf", "reportlab", "numpy", "opencv-python-headless", "rapidocr", "onnxruntime", "docling", "psycopg[binary]", "pgvector", "sentence-transformers", "python-dotenv","rank-bm25","ollama", "neo4j"]
 
 [build-system]
 requires = ["hatchling"]

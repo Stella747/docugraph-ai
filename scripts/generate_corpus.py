@@ -72,6 +72,8 @@ TABLES = {
 }
 ISSUES["ISS-006"] = ("sla_internal_inconsistency", "High",
                      [("acme_sla_schedule.pdf", "1.1"), ("acme_cloud_msa.pdf", "8.2")])
+ISSUES["ISS-007"] = ("sla_schedule_vs_policy", "High",
+                     [("acme_sla_schedule.pdf", "1.1"), ("northwind_vendor_security_policy.pdf", "4.1")])
 
 def render(filename, title, sections, page_index):
     c = canvas.Canvas(str(RAW / filename), pagesize=A4)

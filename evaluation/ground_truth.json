@@ -111,6 +111,23 @@
           "page": 2
         }
       ]
+    },
+    {
+      "id": "ISS-007",
+      "type": "sla_schedule_vs_policy",
+      "severity": "High",
+      "evidence": [
+        {
+          "document": "acme_sla_schedule.pdf",
+          "section": "1.1",
+          "page": 1
+        },
+        {
+          "document": "northwind_vendor_security_policy.pdf",
+          "section": "4.1",
+          "page": 3
+        }
+      ]
     }
   ],
   "decoys": [
