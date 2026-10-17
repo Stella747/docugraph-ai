@@ -1,0 +1,76 @@
+[
+  {
+    "id": "A1",
+    "question": "How quickly must the vendor report a personal data breach under Northwind's vendor security policy?",
+    "answerable": true,
+    "expected": [
+      ["northwind_vendor_security_policy.pdf", "5.3"]
+    ]
+  },
+  {
+    "id": "A2",
+    "question": "What level of cyber liability insurance coverage is documented in Acme Cloud's certificate of insurance?",
+    "answerable": true,
+    "expected": [
+      ["acme_insurance_certificate.pdf", "1.1"]
+    ]
+  },
+  {
+    "id": "A3",
+    "question": "What is the targeted resolution time for Medium severity incidents according to Schedule A?",
+    "answerable": true,
+    "expected": [
+      ["acme_sla_schedule.pdf", "1.1"]
+    ]
+  },
+  {
+    "id": "A4",
+    "question": "How frequently are privileged access reviews required under the Master Services Agreement?",
+    "answerable": true,
+    "expected": [
+      ["acme_cloud_msa.pdf", "10.4"]
+    ]
+  },
+  {
+    "id": "A5",
+    "question": "Does the payment term specified in Invoice 0412 comply with the payment terms established in the Master Services Agreement?",
+    "answerable": true,
+    "expected": [
+      ["acme_cloud_msa.pdf", "11.3"],
+      ["acme_invoice_0412.pdf", "3"]
+    ]
+  },
+  {
+    "id": "A6",
+    "question": "Does Acme Cloud's active insurance certificate satisfy the minimum coverage amount required by Northwind's vendor security policy?",
+    "answerable": true,
+    "expected": [
+      ["acme_insurance_certificate.pdf", "1.1"],
+      ["northwind_vendor_security_policy.pdf", "6.2"]
+    ]
+  },
+  {
+    "id": "U1",
+    "question": "What notice period is required for convenience termination of the Master Services Agreement?",
+    "answerable": false,
+    "expected": []
+  },
+  {
+    "id": "U2",
+    "question": "What is the aggregate limitation of liability cap for indirect or consequential damages under the agreement?",
+    "answerable": false,
+    "expected": []
+  },
+  {
+    "id": "U3",
+    "question": "Are vendors required to obtain prior written consent before engaging third-party subcontractors?",
+    "answerable": false,
+    "expected": []
+  },
+  {
+    "id": "U4",
+    "question": "In which specific geographic regions or cloud data centers must customer personal data be stored at rest?",
+    "answerable": false,
+    "expected": []
+  }
+]

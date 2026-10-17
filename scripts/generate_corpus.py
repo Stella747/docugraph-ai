@@ -117,7 +117,7 @@ def ref(page_index, f, s):
 if __name__ == "__main__":
     idx = {}
     for fname, (title, secs) in DOCS.items():
-        filler= [(f"0.{1}","General Provisions", FILLER_TEXT)
+        filler= [(f"0.{i}","General Provisions", FILLER_TEXT)
                  for i in range(1, FILLER_COUNT.get(fname,0)+1)]
         render(fname, title, filler + secs, idx)
     truth = {

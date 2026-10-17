@@ -1,0 +1,14 @@
+﻿
+Q: Which vendor commitments fall short of the security policy?
+A: Not found in the documents.
+[verified=True attempts=1 sources_in_context=6 expanded=True]
+  [1] acme_cloud_msa.pdf, section 12.1, page 2: "Vendor shall maintain cyber liability insurance of not less than USD 2,000,000 throughout the Term."
+  [2] northwind_vendor_security_policy.pdf, section 6.2, page 3: "Vendors handling customer data must hold cyber liability insurance of at least USD 5,000,000."
+  [3] acme_cloud_msa.pdf, section 8.2, page 2: "Vendor shall respond to Critical incidents within 4 hours of notification."
+  [4] northwind_vendor_security_policy.pdf, section 4.1, page 3: "All vendors must respond to Critical incidents within 2 hours of notification."
+  [5] acme_insurance_certificate.pdf, section 1.1, page 1: "Cyber liability coverage limit: USD 2,000,000 per claim."
+  [6] acme_sla_schedule.pdf, section 1.1, page 1: "Response and resolution targets by incident severity are set out in the table below. | Severity | Response time | Resolution target |
+|---|---|---|
+| Critical | 8 hours | 24 hours |
+| High | 12 hours | 48 hours |
+| Medium | 2 business days | 5 business days |"
