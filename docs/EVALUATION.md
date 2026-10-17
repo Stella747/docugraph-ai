@@ -29,3 +29,19 @@ Metric: Recall@3 over expected clauses. Systems: vector (bge-small), BM25, hybri
 
 ## Limitations
 n=12 held-out (one clause is about 8% of a type's score); small synthetic corpus; held-out topics overlap with dev topics; one author wrote all queries.
+
+# Evaluation Results: Extraction v1
+
+## Held-Out Evaluation Summary
+- **Dataset Size:** 12 clauses (8 positives, 4 negatives), yielding 10 ground-truth facts.
+- **Recall:** 0.90 (9/10 facts extracted; 1 complete miss on explicit date in X6).
+- **Precision:** 1.00 (9/9 extracted facts valid).
+- **Negative Rejection:** 100% (0 false positive facts extracted across 8 total negative clauses from two evaluation passes).
+- **Bound Rule Accuracy:** 7/9 (77.8%). Fallback to `exact` occurred on unseen held-out cues ("not to be exceeded by", "a floor of").
+- **Severity Scoring:** Invalid/Uninterpretable. The gold schema mixed risk-level definitions (post-extraction risk assessment) with incident-severity categorization, leading to a definition mismatch across non-SLA facts. On SLA facts (X4, X7), the model inverted level mapping (critical ↔ high).
+- **X6 Extraction Miss:** Clause explicitly contains "December 31, 2028", but the model returned an empty list.
+
+## Evaluation Limitations
+- **Sample Size:** $n = 12$ clauses total is a small evaluation footprint.
+- **Author Bias:** Single-author test dataset.
+- **Model Capacity:** Evaluated on a 3B parameter model paired with a deterministic rule layer.

@@ -3,13 +3,16 @@ import re
 
 MODEL = "qwen2.5:3b"
 ATTRS = {  # attribute: (unit, description shown to the model)
-    "incident_response_hours": ("hours", "time allowed to respond to an incident"),
+    "incident_response_hours": ("hours", "time allowed to first respond to an incident"),
+    "incident_resolution_hours": ("hours", "time allowed to fully resolve or fix an incident"),
     "breach_notice_hours": ("hours", "time allowed to notify of a personal data breach"),
     "payment_terms_days": ("days", "days allowed to pay an invoice"),
     "cyber_insurance_usd": ("usd", "cyber liability insurance amount in USD"),
+    "contract_start_date": ("date", "date the agreement or its term begins"),
     "contract_end_date": ("date", "date the agreement or its term ends"),
     "insurance_end_date": ("date", "date an insurance policy or coverage period ends"),
 }
+SEVERITIES = ["critical", "high", "medium", "low", "none"]
 SCHEMA = {
     "type": "object",
     "properties": {"facts": {"type": "array", "items": {
@@ -17,22 +20,28 @@ SCHEMA = {
         "properties": {
             "attribute": {"type": "string", "enum": list(ATTRS)},
             "value": {"type": "string", "maxLength": 12},
+            "severity": {"type": "string", "enum": SEVERITIES},
         },
-        "required": ["attribute", "value"],
+        "required": ["attribute", "value", "severity"],
     }}},
     "required": ["facts"],
 }
 SYSTEM = (
     "You extract contractual facts from one clause as JSON. Allowed attributes:\n"
     + "\n".join(f"- {k}: {d}" for k, (_, d) in ATTRS.items())
-    + "\nExtract a fact only if the clause states a value for one of these attributes. Numbers that belong "
-    "to other terms are not facts; return an empty list if the clause has none. Write values as plain numbers "
-    "without commas (USD 2,000,000 -> 2000000) and dates as YYYY-MM-DD."
+    + "\nExtract a fact only if the clause states a value for one of these attributes; return one fact per "
+    "stated value. Numbers that belong to other terms (fees, percentages, other periods) are not facts; "
+    "return an empty list if the clause has none. Write values as plain numbers without commas "
+    "(USD 2,000,000 -> 2000000) and dates as YYYY-MM-DD. severity: the incident severity level "
+    "(critical, high, medium, low) the value applies to, or 'none' if the clause names no severity."
 )
-EXAMPLES = [  # deliberately unlike the gold clauses
+EXAMPLES = [  # deliberately unlike any clause we score on
     ("Acknowledgement: Provider must acknowledge urgent incidents within 3 hours of notification.",
-     {"facts": [{"attribute": "incident_response_hours", "value": "3"}]}),
-    ("General Provisions: Headings are for convenience only and do not affect interpretation.",
+     {"facts": [{"attribute": "incident_response_hours", "value": "3", "severity": "none"}]}),
+    ("Support Targets: For High incidents the Provider shall respond within 1 hour and resolve within 8 hours.",
+     {"facts": [{"attribute": "incident_response_hours", "value": "1", "severity": "high"},
+                {"attribute": "incident_resolution_hours", "value": "8", "severity": "high"}]}),
+    ("Late Payment: Overdue amounts accrue interest at 2% per month after a 10 day grace period.",
      {"facts": []}),
 ]
 MONTHS = {m: i for i, m in enumerate(
@@ -54,16 +63,23 @@ def bound_from_text(text: str, unit: str) -> str:
     return "exact"
 
 
+def _dates_in(text: str) -> set[str]:
+    t = text.lower()
+    found = set(re.findall(r"\d{4}-\d{2}-\d{2}", t))
+    for d, mon, y in re.findall(r"(\d{1,2})(?:st|nd|rd|th)?\s+(?:of\s+)?([a-z]+),?\s+(\d{4})", t):
+        if mon in MONTHS:
+            found.add(f"{y}-{MONTHS[mon]:02d}-{int(d):02d}")
+    for mon, d, y in re.findall(r"([a-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})", t):
+        if mon in MONTHS:
+            found.add(f"{y}-{MONTHS[mon]:02d}-{int(d):02d}")
+    return found
+
+
 def grounded(value: str, unit: str, text: str) -> bool:
-    """Keep a fact only if its value literally appears in the clause."""
-    t = text.lower().replace(",", "")
+    """Keep a fact only if its value literally appears in the clause (numerals and dates only)."""
     if unit == "date":
-        found = set(re.findall(r"\d{4}-\d{2}-\d{2}", t))
-        for d, mon, y in re.findall(r"(\d{1,2})\s+([a-z]+)\s+(\d{4})", t):
-            if mon in MONTHS:
-                found.add(f"{y}-{MONTHS[mon]:02d}-{int(d):02d}")
-        return value in found
-    return value in re.findall(r"\d+", t)
+        return value in _dates_in(text)
+    return value in re.findall(r"\d+", text.lower().replace(",", ""))
 
 
 def _messages(heading: str, text: str) -> list[dict]:
@@ -75,14 +91,14 @@ def _messages(heading: str, text: str) -> list[dict]:
 
 def extract(client, heading: str, text: str):
     """Returns (kept_facts, dropped_facts). Bound comes from cue words, not from the model."""
-    resp = client.chat(model=MODEL, format=SCHEMA, options={"temperature": 0, "num_predict": 300},
+    resp = client.chat(model=MODEL, format=SCHEMA, options={"temperature": 0, "num_predict": 400},
                        messages=_messages(heading, text))
     kept, dropped = [], []
     for f in json.loads(resp["message"]["content"])["facts"]:
         unit = ATTRS[f["attribute"]][0]
         if grounded(f["value"], unit, text):
             kept.append({"attribute": f["attribute"], "value": f["value"], "unit": unit,
-                         "bound": bound_from_text(text, unit)})
+                         "severity": f["severity"], "bound": bound_from_text(text, unit)})
         else:
             dropped.append((f["attribute"], f["value"]))
     return kept, dropped

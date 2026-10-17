@@ -1,14 +1,142 @@
 [
-  {"id": "X1",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "X2",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "X3",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "X4",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "X5",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "X6",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "X7",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "X8",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "N1",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "N2",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "N3",  "heading": "TODO", "text": "TODO", "facts": []},
-  {"id": "N4",  "heading": "TODO", "text": "TODO", "facts": []}
+  {
+    "id": "X1",
+    "heading": "Security Incident Notification",
+    "text": "The Service Provider shall report any confirmed unauthorized access to customer data to the Primary Contact, with notice not to be exceeded by forty-eight (48) hours following discovery.",
+    "facts": [
+      {
+        "attribute": "breach_notice_hours",
+        "value": "48",
+        "bound": "max",
+        "severity": "critical"
+      }
+    ]
+  },
+  {
+    "id": "X2",
+    "heading": "Insurance Threshold",
+    "text": "Vendor agrees to maintain a floor of USD 3,000,000 in general commercial cyber risk insurance throughout the active engagement period.",
+    "facts": [
+      {
+        "attribute": "cyber_insurance_usd",
+        "value": "3000000",
+        "bound": "min",
+        "severity": "high"
+      }
+    ]
+  },
+  {
+    "id": "X3",
+    "heading": "Agreement Effective Date",
+    "text": "This Master Services Framework will take full legal effect starting October 15, 2025.",
+    "facts": [
+      {
+        "attribute": "contract_start_date",
+        "value": "2025-10-15",
+        "bound": "exact",
+        "severity": "low"
+      }
+    ]
+  },
+  {
+    "id": "X4",
+    "heading": "Service Response and Remediation",
+    "text": "For Priority 1 System Outages, initial technical acknowledgement must occur within 1 hour, and complete resolution is mandated within 12 hours of initial triage.",
+    "facts": [
+      {
+        "attribute": "incident_response_hours",
+        "value": "1",
+        "bound": "max",
+        "severity": "critical"
+      },
+      {
+        "attribute": "incident_resolution_hours",
+        "value": "12",
+        "bound": "max",
+        "severity": "critical"
+      }
+    ]
+  },
+  {
+    "id": "X5",
+    "heading": "Payment Timelines",
+    "text": "Customer shall remit payment for all undisputed line items within a deadline not to exceed 60 days from invoice generation.",
+    "facts": [
+      {
+        "attribute": "payment_terms_days",
+        "value": "60",
+        "bound": "max",
+        "severity": "medium"
+      }
+    ]
+  },
+  {
+    "id": "X6",
+    "heading": "Termination Date",
+    "text": "Unless extended by mutual written amendment, this agreement automatically terminates on December 31, 2028.",
+    "facts": [
+      {
+        "attribute": "contract_end_date",
+        "value": "2028-12-31",
+        "bound": "exact",
+        "severity": "low"
+      }
+    ]
+  },
+  {
+    "id": "X7",
+    "heading": "Secondary Incident Handling",
+    "text": "For Major System Vulnerabilities, incident response is required within 6 hours, while full patch application must be concluded in under 72 hours.",
+    "facts": [
+      {
+        "attribute": "incident_response_hours",
+        "value": "6",
+        "bound": "max",
+        "severity": "high"
+      },
+      {
+        "attribute": "incident_resolution_hours",
+        "value": "72",
+        "bound": "max",
+        "severity": "high"
+      }
+    ]
+  },
+  {
+    "id": "X8",
+    "heading": "Minimum Coverage Requirement",
+    "text": "Contractor must maintain at least USD 10,000,000 in professional liability coverage to handle enterprise infrastructure operations.",
+    "facts": [
+      {
+        "attribute": "cyber_insurance_usd",
+        "value": "10000000",
+        "bound": "min",
+        "severity": "critical"
+      }
+    ]
+  },
+  {
+    "id": "N1",
+    "heading": "User Privilege Audits",
+    "text": "System administrators must conduct comprehensive user access reviews and permission recertifications every 180 days.",
+    "facts": []
+  },
+  {
+    "id": "N2",
+    "heading": "Late Payment Interest",
+    "text": "Invoices unpaid after the due date shall accumulate finance charges of 1.5% per month or the maximum statutory rate allowed by law.",
+    "facts": []
+  },
+  {
+    "id": "N3",
+    "heading": "Breach Cure Window",
+    "text": "In the event of a non-monetary material default, the non-breaching party may grant a 30-day cure period prior to initiating contract cancellation.",
+    "facts": []
+  },
+  {
+    "id": "N4",
+    "heading": "Data Backup Frequency",
+    "text": "Database snapshots and full system backups must be executed every 12 hours and stored in offsite redundant data centers.",
+    "facts": []
+  }
 ]

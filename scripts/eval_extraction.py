@@ -5,7 +5,7 @@ from pathlib import Path
 
 import ollama
 
-from docugraph.extract.extractor import extract
+from docugraph.extract.extractor import ATTRS, extract
 
 mode = sys.argv[1] if len(sys.argv) > 1 else "dev"
 
@@ -21,8 +21,13 @@ def load_dev():
 
 
 items = load_dev() if mode == "dev" else json.loads(Path("evaluation/extraction_heldout.json").read_text())
-client = ollama.Client(timeout=90)
-tp = fp = fn = bound_ok = bound_n = neg_n = neg_bad = 0
+if mode != "dev":
+    bad = [f"{it['id']}: {f.get('attribute')}" for it in items for f in it["facts"] if f.get("attribute") not in ATTRS]
+    if bad or any("TODO" in it["text"] for it in items):
+        raise SystemExit(f"Held-out file is not ready (TODOs or unknown attributes): {bad}")
+
+client = ollama.Client(timeout=240)
+tp = fp = fn = bound_ok = bound_n = sev_ok = sev_n = neg_n = neg_bad = 0
 for it in items:
     t0 = time.perf_counter()
     try:
@@ -40,10 +45,14 @@ for it in items:
         neg_bad += bool(have)
     for k in want.keys() & have.keys():
         bound_n += 1
-        if want[k]["bound"] == have[k]["bound"]:
-            bound_ok += 1
-        else:
+        bound_ok += want[k]["bound"] == have[k]["bound"]
+        if want[k]["bound"] != have[k]["bound"]:
             print(f"  BOUND    {it['id']}  {k[0]}: gold={want[k]['bound']} got={have[k]['bound']}")
+        if "severity" in want[k]:
+            sev_n += 1
+            sev_ok += want[k]["severity"] == have[k]["severity"]
+            if want[k]["severity"] != have[k]["severity"]:
+                print(f"  SEVERITY {it['id']}  {k[0]}: gold={want[k]['severity']} got={have[k]['severity']}")
     flag = "ok      " if want.keys() == have.keys() else "MISMATCH"
     print(f"{flag} {time.perf_counter() - t0:4.1f}s {it['id']:30} dropped={dropped}", flush=True)
     if flag == "MISMATCH":
@@ -52,4 +61,5 @@ for it in items:
 print(f"\n[{mode}] clauses: {len(items)}   recall {tp / max(tp + fn, 1):.2f}   "
       f"precision {tp / max(tp + fp, 1):.2f}   (tp={tp} fp={fp} fn={fn})")
 print(f"bound correct on matched facts: {bound_ok}/{bound_n}")
+print(f"severity correct where gold has it: {sev_ok}/{sev_n}")
 print(f"negative clauses with a false fact: {neg_bad}/{neg_n}")

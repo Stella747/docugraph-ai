@@ -3,7 +3,7 @@
   {"document": "acme_cloud_msa.pdf", "section": "9.1", "facts": [{"attribute": "breach_notice_hours", "value": "72", "unit": "hours", "bound": "max"}]},
   {"document": "acme_cloud_msa.pdf", "section": "11.3", "facts": [{"attribute": "payment_terms_days", "value": "45", "unit": "days", "bound": "max"}]},
   {"document": "acme_cloud_msa.pdf", "section": "12.1", "facts": [{"attribute": "cyber_insurance_usd", "value": "2000000", "unit": "usd", "bound": "min"}]},
-  {"document": "acme_cloud_msa.pdf", "section": "4.2", "facts": [{"attribute": "contract_end_date", "value": "2027-12-31", "unit": "date", "bound": "exact"}]},
+  {"document": "acme_cloud_msa.pdf", "section": "4.2", "facts": [{"attribute": "contract_start_date", "value": "2026-01-01", "unit": "date", "bound": "exact"}, {"attribute": "contract_end_date", "value": "2027-12-31", "unit": "date", "bound": "exact"}]},
   {"document": "northwind_vendor_security_policy.pdf", "section": "4.1", "facts": [{"attribute": "incident_response_hours", "value": "2", "unit": "hours", "bound": "max"}]},
   {"document": "northwind_vendor_security_policy.pdf", "section": "5.3", "facts": [{"attribute": "breach_notice_hours", "value": "24", "unit": "hours", "bound": "max"}]},
   {"document": "northwind_vendor_security_policy.pdf", "section": "6.2", "facts": [{"attribute": "cyber_insurance_usd", "value": "5000000", "unit": "usd", "bound": "min"}]},
