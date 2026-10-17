@@ -92,7 +92,7 @@ def ask(conn, question: str, expand_graph: bool = True, k: int = 3) -> dict:
         for e in f["evidence"]:
             allowed |= set(re.findall(r"\d+", e["value"]))  # fact values, including date parts
 
-    base = {"n_sources": len(keys), "expanded": expand_graph}
+    base = {"n_sources": len(keys), "expanded": expand_graph,"retrieved":_cites(keys, list(range(1, len(keys)+1)))}
     feedback = ""
     for attempt in (1, 2):
         prompt = (

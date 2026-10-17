@@ -50,10 +50,13 @@ async function loadGraph() {
   cytoscape({
     container: document.getElementById("cy"),
     elements: [...g.nodes, ...g.edges],
-    layout: { name: "circle" },
+    layout: { name: "cose", animate: false, nodeRepulsion: 14000, idealEdgeLength: 150, padding: 30 },
     style: [
-      { selector: "node", style: { label: "data(label)", "font-size": 10, "background-color": "#0969da", "text-wrap": "wrap", "text-max-width": 110 } },
-      { selector: "edge", style: { label: "data(label)", "font-size": 8, "curve-style": "bezier", width: 2,
+      { selector: "node", style: { label: "data(label)", "font-size": 10, "background-color": "#0969da",
+          "text-valign": "bottom", "text-margin-y": 6, "text-wrap": "wrap", "text-max-width": 120 } },
+      { selector: "edge", style: { label: "data(label)", "font-size": 8, "curve-style": "bezier",
+          "control-point-step-size": 40, width: 2, "text-rotation": "autorotate",
+          "text-background-color": "#ffffff", "text-background-opacity": 0.85, "text-background-padding": 2,
           "line-color": ele => COLORS[ele.data("severity")] || "#999" } },
     ],
   });
@@ -96,13 +99,17 @@ document.getElementById("askBtn").onclick = async () => {
     body: JSON.stringify({ question: document.getElementById("q").value }) });
   if (!res.ok) { out.textContent = (await res.json()).detail; return; }
   const r = await res.json();
-  const label = r.source === "rules"
-    ? "Related conflicts found by the rule engine. This may not answer your question."
-    : "AI-generated answer from a small local model. Verify it against the cited clauses.";
+  const refused = !r.found;
+  const label = refused
+    ? "No answer was generated. The closest clauses retrieved are shown below and may still be relevant."
+    : r.source === "rules"
+      ? "Related conflicts found by the rule engine. This may not answer your question."
+      : "AI-generated answer from a small local model. Verify it against the cited clauses.";
+  const shown = refused ? r.retrieved : r.citations;
   out.replaceChildren(
-    el("p", {}, r.found ? r.answer : "Not found in the documents."),
+    el("p", {}, refused ? "Not found in the documents." : r.answer),
     el("p", { class: "note" }, label),
-    ...r.citations.map(c => el("blockquote", {}, `[${c.n}] ${c.document}, section ${c.section}, page ${c.page}: "${c.text}"`)));
+    ...shown.map(c => el("blockquote", {}, `[${c.n}] ${c.document}, section ${c.section}, page ${c.page}: "${c.text}"`)));
 };
 
 loadGraph();
