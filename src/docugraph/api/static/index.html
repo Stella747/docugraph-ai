@@ -8,14 +8,20 @@
 <style>
   body { font-family: system-ui, sans-serif; max-width: 980px; margin: 24px auto; padding: 0 16px; color: #1b1f23; }
   h1 { margin-bottom: 4px; } .sub { color: #57606a; margin-top: 0; }
-  .card { border: 1px solid #d0d7de; border-radius: 8px; padding: 14px 16px; margin: 14px 0; }
+  .card { border: 1px solid #d0d7de; border-radius: 8px; padding: 14px 16px; margin: 14px 0; transition: box-shadow .3s; }
+  .flash { box-shadow: 0 0 0 3px #bf8700; }
   .badge { font-size: 12px; padding: 2px 8px; border-radius: 10px; margin-left: 6px; color: #fff; }
   .High { background: #cf222e; } .Medium { background: #bc4c00; } .Low { background: #6e7781; }
   .warn { background: #9a6700; } .ok { background: #1a7f37; }
   blockquote { margin: 6px 0; padding: 4px 10px; border-left: 3px solid #d0d7de; color: #424a53; font-size: 14px; }
   textarea, input[type=text] { width: 100%; box-sizing: border-box; padding: 6px; margin: 6px 0; font: inherit; }
   button { padding: 6px 12px; margin-right: 6px; cursor: pointer; }
-  #cy { height: 300px; border: 1px solid #d0d7de; border-radius: 8px; }
+  #cy { width: 100%; height: 400px; border: 1px solid #d0d7de; border-radius: 8px; background: #fafbfc; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #424a53; margin: 8px 0 2px; }
+  .legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px;
+    margin-right: 6px; vertical-align: -1px; background: var(--c); }
+  .legend .line::before { height: 4px; border-radius: 2px; vertical-align: 2px; width: 18px; }
+  #caption { min-height: 22px; font-size: 14px; margin: 6px 0 0; }
   .note { font-size: 13px; color: #57606a; }
 </style>
 </head>
@@ -25,9 +31,18 @@
 
 <h2>Conflict graph</h2>
 <div id="cy"></div>
+<div class="legend">
+  <span style="--c:#0969da">Requirement (policy, regulation)</span>
+  <span style="--c:#8250df">Commitment (contract)</span>
+  <span style="--c:#57606a">Evidence (certificate, invoice)</span>
+  <span class="line" style="--c:#cf222e">High</span>
+  <span class="line" style="--c:#bc4c00">Medium</span>
+  <span class="line" style="--c:#6e7781">Low</span>
+</div>
+<p id="caption" class="note">Hover a line to see the conflict; click it to jump to the finding.</p>
 
 <h2>Findings</h2>
-<div id="findings">Loading…</div>
+<div id="findings">Loading...</div>
 
 <h2>Ask a question</h2>
 <input type="text" id="q" placeholder="e.g. Which commitments fall short of the security policy?">
@@ -43,23 +58,57 @@ function el(tag, attrs, ...kids) {
   for (const kid of kids) n.append(kid);
   return n;
 }
-const COLORS = { High: "#cf222e", Medium: "#bc4c00", Low: "#6e7781" };
+const SEV = { High: "#cf222e", Medium: "#bc4c00", Low: "#6e7781" };
+const ROLE_COLOR = { policy: "#0969da", regulation: "#0969da", contract: "#8250df",
+                     certificate: "#57606a", invoice: "#57606a", other: "#57606a" };
+const COLUMN = { policy: 0, regulation: 0, contract: 1, other: 1, certificate: 2, invoice: 2 };
+const pretty = s => s.split(" ").map(w => w ? w[0].toUpperCase() + w.slice(1) : w).join(" ");
 
 async function loadGraph() {
   const g = await (await fetch("/api/graph")).json();
-  cytoscape({
+  const columns = {};
+  [...g.nodes].sort((a, b) => a.data.id.localeCompare(b.data.id)).forEach(n => {
+    const c = COLUMN[n.data.role] ?? 1;
+    (columns[c] = columns[c] || []).push(n);
+  });
+  Object.entries(columns).forEach(([c, list]) => list.forEach((n, i) => {
+    n.position = { x: Number(c) * 400, y: (i - (list.length - 1) / 2) * 120 };
+    n.data.label = pretty(n.data.label);
+    n.data.color = ROLE_COLOR[n.data.role] || ROLE_COLOR.other;
+  }));
+  const cy = cytoscape({
     container: document.getElementById("cy"),
     elements: [...g.nodes, ...g.edges],
-    layout: { name: "cose", animate: false, nodeRepulsion: 14000, idealEdgeLength: 150, padding: 30 },
+    layout: { name: "preset" },
+    userZoomingEnabled: false, userPanningEnabled: false, boxSelectionEnabled: false, autoungrabify: true,
     style: [
-      { selector: "node", style: { label: "data(label)", "font-size": 10, "background-color": "#0969da",
-          "text-valign": "bottom", "text-margin-y": 6, "text-wrap": "wrap", "text-max-width": 120 } },
-      { selector: "edge", style: { label: "data(label)", "font-size": 8, "curve-style": "bezier",
-          "control-point-step-size": 40, width: 2, "text-rotation": "autorotate",
-          "text-background-color": "#ffffff", "text-background-opacity": 0.85, "text-background-padding": 2,
-          "line-color": ele => COLORS[ele.data("severity")] || "#999" } },
+      { selector: "node", style: {
+          shape: "round-rectangle", width: 170, height: 46, label: "data(label)", color: "#ffffff",
+          "font-size": 12, "text-valign": "center", "text-halign": "center", "text-wrap": "wrap",
+          "text-max-width": 150, "background-color": "data(color)", "z-index-compare": "manual", "z-index": 10 } },
+      { selector: "edge", style: {
+          width: 3, opacity: 0.85, "curve-style": "bezier", "control-point-step-size": 45,
+          "line-color": ele => SEV[ele.data("severity")] || "#999", "z-index-compare": "manual", "z-index": 1 } },
+      { selector: "edge.hover", style: { width: 6, opacity: 1 } },
     ],
   });
+  const caption = document.getElementById("caption");
+  const names = id => cy.getElementById(id).data("label");
+  cy.on("mouseover", "edge", e => {
+    e.target.addClass("hover");
+    const d = e.target.data();
+    caption.textContent = `${d.attribute} (${d.severity}): ${names(d.source)} and ${names(d.target)}`;
+  });
+  cy.on("mouseout", "edge", e => e.target.removeClass("hover"));
+  cy.on("tap", "edge", e => {
+    const card = document.getElementById("f-" + e.target.data("fid"));
+    if (!card) return;
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    card.classList.add("flash");
+    setTimeout(() => card.classList.remove("flash"), 1500);
+  });
+  cy.resize(); cy.fit(undefined, 30);
+  window.addEventListener("resize", () => { cy.resize(); cy.fit(undefined, 30); });
 }
 
 async function review(id, decision, note, edited) {
@@ -77,7 +126,7 @@ async function loadFindings() {
     const note = el("textarea", { rows: 2, placeholder: "Reviewer note, or an edited explanation" });
     if (f.review) note.value = f.review.edited_text || f.review.note || "";
     const status = f.review ? `Reviewed: ${f.review.decision}` : "Not reviewed";
-    return el("div", { class: "card" },
+    return el("div", { class: "card", id: "f-" + f.id },
       el("strong", {}, f.attribute),
       el("span", { class: "badge " + f.severity }, f.severity),
       el("span", { class: "badge " + (f.verified ? "ok" : "warn") }, f.verified ? "numbers verified" : "template text"),
@@ -94,7 +143,7 @@ async function loadFindings() {
 
 document.getElementById("askBtn").onclick = async () => {
   const out = document.getElementById("answer");
-  out.textContent = "Thinking… (a local model can take 10 to 40 seconds)";
+  out.textContent = "Thinking... (a local model can take 10 to 40 seconds)";
   const res = await fetch("/api/ask", { method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ question: document.getElementById("q").value }) });
   if (!res.ok) { out.textContent = (await res.json()).detail; return; }
@@ -105,7 +154,7 @@ document.getElementById("askBtn").onclick = async () => {
     : r.source === "rules"
       ? "Related conflicts found by the rule engine. This may not answer your question."
       : "AI-generated answer from a small local model. Verify it against the cited clauses.";
-  const shown = refused ? r.retrieved : r.citations;
+  const shown = refused ? (r.retrieved || []) : r.citations;
   out.replaceChildren(
     el("p", {}, refused ? "Not found in the documents." : r.answer),
     el("p", { class: "note" }, label),

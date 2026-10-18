@@ -13,3 +13,7 @@ packages = ["src/docugraph"]
 
 [project.optional-dependencies]
 dev = ["pytest","httpx"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+markers = ["slow: needs OCR or Docling models and generated scans; run locally"]

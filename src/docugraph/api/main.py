@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import sqlite3
 from pathlib import Path
 from typing import Literal
@@ -8,8 +9,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-DB = Path("data/processed/reviews.db")
-REPORT = Path("data/processed/report.json")
+DATA = Path(os.getenv("DOCUGRAPH_DATA", "data/processed"))
+DB = DATA / "reviews.db"
+REPORT = DATA / "report.json"
+ROLES = DATA / "roles.json"
 PAGE = Path(__file__).parent / "static" / "index.html"
 
 app = FastAPI(title="DocuGraph AI")
@@ -72,13 +75,16 @@ def review(r: Review):
 
 @app.get("/api/graph")
 def graph():
+    roles = json.loads(ROLES.read_text()) if ROLES.exists() else {}
     nodes, edges = {}, []
     for i in _items():
         docs = list(dict.fromkeys(e["document"] for e in i["evidence"]))
         for d in docs:
-            nodes[d] = {"data": {"id": d, "label": d.replace(".pdf", "").replace("_", " ")}}
+            nodes[d] = {"data": {"id": d, "label": d.replace(".pdf", "").replace("_", " "),
+                                 "role": roles.get(d, "other")}}
         for a, b in zip(docs, docs[1:]):
-            edges.append({"data": {"source": a, "target": b, "label": i["attribute"], "severity": i["severity"]}})
+            edges.append({"data": {"source": a, "target": b, "attribute": i["attribute"],
+                                   "severity": i["severity"], "fid": i["id"]}})
     return {"nodes": list(nodes.values()), "edges": edges}
 
 

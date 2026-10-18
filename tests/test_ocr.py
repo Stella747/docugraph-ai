@@ -1,11 +1,12 @@
 from difflib import SequenceMatcher
 from pathlib import Path
+import pytest
 
 from docugraph.ingest.pdf_parser import parse_pdf
 
 SCANNED = ["acme_insurance_certificate.pdf", "acme_invoice_0412.pdf"]
 
-
+@pytest.mark.slow
 def test_scanned_docs_match_digital_originals():
     for name in SCANNED:
         digital = {s.section: s for s in parse_pdf(Path("data/raw") / name)}

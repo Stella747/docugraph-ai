@@ -1,0 +1,182 @@
+[
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "cyber_insurance_usd",
+    "evidence": [
+      {
+        "document": "northwind_vendor_security_policy.pdf",
+        "bound": "min",
+        "section": "6.2",
+        "page": 3,
+        "value": "5000000"
+      },
+      {
+        "document": "acme_cloud_msa.pdf",
+        "bound": "min",
+        "section": "12.1",
+        "page": 2,
+        "value": "2000000"
+      }
+    ]
+  },
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "breach_notice_hours",
+    "evidence": [
+      {
+        "document": "northwind_vendor_security_policy.pdf",
+        "bound": "max",
+        "section": "5.3",
+        "page": 3,
+        "value": "24"
+      },
+      {
+        "document": "acme_cloud_msa.pdf",
+        "bound": "max",
+        "section": "9.1",
+        "page": 2,
+        "value": "72"
+      }
+    ]
+  },
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "breach_notice_hours",
+    "evidence": [
+      {
+        "document": "fictional_data_protection_act_excerpt.pdf",
+        "bound": "max",
+        "section": "12",
+        "page": 2,
+        "value": "24"
+      },
+      {
+        "document": "acme_cloud_msa.pdf",
+        "bound": "max",
+        "section": "9.1",
+        "page": 2,
+        "value": "72"
+      }
+    ]
+  },
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "incident_response_hours",
+    "evidence": [
+      {
+        "document": "northwind_vendor_security_policy.pdf",
+        "bound": "max",
+        "section": "4.1",
+        "page": 3,
+        "value": "2"
+      },
+      {
+        "document": "acme_cloud_msa.pdf",
+        "bound": "max",
+        "section": "8.2",
+        "page": 2,
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "incident_response_hours",
+    "evidence": [
+      {
+        "document": "northwind_vendor_security_policy.pdf",
+        "bound": "max",
+        "section": "4.1",
+        "page": 3,
+        "value": "2"
+      },
+      {
+        "document": "acme_sla_schedule.pdf",
+        "bound": "max",
+        "section": "1.1",
+        "page": 1,
+        "value": "8"
+      }
+    ]
+  },
+  {
+    "rule": "requirement_vs_commitment",
+    "attribute": "cyber_insurance_usd",
+    "evidence": [
+      {
+        "document": "northwind_vendor_security_policy.pdf",
+        "bound": "min",
+        "section": "6.2",
+        "page": 3,
+        "value": "5000000"
+      },
+      {
+        "document": "acme_insurance_certificate.pdf",
+        "bound": "exact",
+        "section": "1.1",
+        "page": 1,
+        "value": "2000000"
+      }
+    ]
+  },
+  {
+    "rule": "internal_inconsistency",
+    "attribute": "incident_response_hours",
+    "evidence": [
+      {
+        "document": "acme_cloud_msa.pdf",
+        "bound": "max",
+        "section": "8.2",
+        "page": 2,
+        "value": "4"
+      },
+      {
+        "document": "acme_sla_schedule.pdf",
+        "bound": "max",
+        "section": "1.1",
+        "page": 1,
+        "value": "8"
+      }
+    ]
+  },
+  {
+    "rule": "coverage_gap",
+    "attribute": "insurance_coverage_gap",
+    "evidence": [
+      {
+        "document": "acme_insurance_certificate.pdf",
+        "bound": "exact",
+        "section": "2.1",
+        "page": 1,
+        "value": "2026-06-30"
+      },
+      {
+        "document": "acme_cloud_msa.pdf",
+        "bound": "exact",
+        "section": "4.2",
+        "page": 2,
+        "value": "2027-12-31"
+      }
+    ]
+  },
+  {
+    "rule": "invoice_vs_contract",
+    "attribute": "payment_terms_days",
+    "evidence": [
+      {
+        "document": "acme_invoice_0412.pdf",
+        "bound": "max",
+        "section": "3",
+        "page": 1,
+        "value": "30"
+      },
+      {
+        "document": "acme_cloud_msa.pdf",
+        "bound": "max",
+        "section": "11.3",
+        "page": 2,
+        "value": "45"
+      }
+    ]
+  }
+]

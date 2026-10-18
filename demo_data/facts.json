@@ -1,0 +1,189 @@
+[
+  {
+    "document": "acme_cloud_msa.pdf",
+    "section": "4.2",
+    "page": 2,
+    "heading": "Term",
+    "attribute": "contract_start_date",
+    "value": "2026-01-01",
+    "unit": "date",
+    "severity": "none",
+    "bound": "exact"
+  },
+  {
+    "document": "acme_cloud_msa.pdf",
+    "section": "4.2",
+    "page": 2,
+    "heading": "Term",
+    "attribute": "contract_end_date",
+    "value": "2027-12-31",
+    "unit": "date",
+    "severity": "none",
+    "bound": "exact"
+  },
+  {
+    "document": "acme_cloud_msa.pdf",
+    "section": "8.2",
+    "page": 2,
+    "heading": "Incident Response",
+    "attribute": "incident_response_hours",
+    "value": "4",
+    "unit": "hours",
+    "severity": "critical",
+    "bound": "max"
+  },
+  {
+    "document": "acme_cloud_msa.pdf",
+    "section": "9.1",
+    "page": 2,
+    "heading": "Breach Notification",
+    "attribute": "breach_notice_hours",
+    "value": "72",
+    "unit": "hours",
+    "severity": "none",
+    "bound": "max"
+  },
+  {
+    "document": "acme_cloud_msa.pdf",
+    "section": "11.3",
+    "page": 2,
+    "heading": "Payment Terms",
+    "attribute": "payment_terms_days",
+    "value": "45",
+    "unit": "days",
+    "severity": "none",
+    "bound": "max"
+  },
+  {
+    "document": "acme_cloud_msa.pdf",
+    "section": "12.1",
+    "page": 2,
+    "heading": "Insurance",
+    "attribute": "cyber_insurance_usd",
+    "value": "2000000",
+    "unit": "usd",
+    "severity": "none",
+    "bound": "min"
+  },
+  {
+    "document": "acme_insurance_certificate.pdf",
+    "section": "1.1",
+    "page": 1,
+    "heading": "Coverage",
+    "attribute": "cyber_insurance_usd",
+    "value": "2000000",
+    "unit": "usd",
+    "severity": "none",
+    "bound": "exact"
+  },
+  {
+    "document": "acme_insurance_certificate.pdf",
+    "section": "2.1",
+    "page": 1,
+    "heading": "Policy Period",
+    "attribute": "insurance_end_date",
+    "value": "2026-06-30",
+    "unit": "date",
+    "severity": "none",
+    "bound": "exact"
+  },
+  {
+    "document": "acme_invoice_0412.pdf",
+    "section": "3",
+    "page": 1,
+    "heading": "Payment Terms",
+    "attribute": "payment_terms_days",
+    "value": "30",
+    "unit": "days",
+    "severity": "none",
+    "bound": "max"
+  },
+  {
+    "document": "acme_sla_schedule.pdf",
+    "section": "1.1",
+    "page": 1,
+    "heading": "Response Times",
+    "attribute": "incident_response_hours",
+    "value": "8",
+    "unit": "hours",
+    "bound": "max",
+    "severity": "critical"
+  },
+  {
+    "document": "acme_sla_schedule.pdf",
+    "section": "1.1",
+    "page": 1,
+    "heading": "Response Times",
+    "attribute": "incident_resolution_hours",
+    "value": "24",
+    "unit": "hours",
+    "bound": "max",
+    "severity": "critical"
+  },
+  {
+    "document": "acme_sla_schedule.pdf",
+    "section": "1.1",
+    "page": 1,
+    "heading": "Response Times",
+    "attribute": "incident_response_hours",
+    "value": "12",
+    "unit": "hours",
+    "bound": "max",
+    "severity": "high"
+  },
+  {
+    "document": "acme_sla_schedule.pdf",
+    "section": "1.1",
+    "page": 1,
+    "heading": "Response Times",
+    "attribute": "incident_resolution_hours",
+    "value": "48",
+    "unit": "hours",
+    "bound": "max",
+    "severity": "high"
+  },
+  {
+    "document": "fictional_data_protection_act_excerpt.pdf",
+    "section": "12",
+    "page": 2,
+    "heading": "Breach Reporting",
+    "attribute": "breach_notice_hours",
+    "value": "24",
+    "unit": "hours",
+    "severity": "none",
+    "bound": "max"
+  },
+  {
+    "document": "northwind_vendor_security_policy.pdf",
+    "section": "4.1",
+    "page": 3,
+    "heading": "Critical Incident Response",
+    "attribute": "incident_response_hours",
+    "value": "2",
+    "unit": "hours",
+    "severity": "critical",
+    "bound": "max"
+  },
+  {
+    "document": "northwind_vendor_security_policy.pdf",
+    "section": "5.3",
+    "page": 3,
+    "heading": "Breach Notification",
+    "attribute": "breach_notice_hours",
+    "value": "24",
+    "unit": "hours",
+    "severity": "none",
+    "bound": "max"
+  },
+  {
+    "document": "northwind_vendor_security_policy.pdf",
+    "section": "6.2",
+    "page": 3,
+    "heading": "Insurance Requirements",
+    "attribute": "cyber_insurance_usd",
+    "value": "5000000",
+    "unit": "usd",
+    "severity": "none",
+    "bound": "min"
+  }
+]

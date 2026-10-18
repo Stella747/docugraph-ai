@@ -1,0 +1,37 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: pip install pymupdf reportlab numpy opencv-python-headless pytest fastapi httpx langgraph ollama
+      - name: Generate corpus and parse it
+        run: |
+          python scripts/generate_corpus.py
+          python scripts/ingest.py
+          cp demo_data/findings.json demo_data/report.json data/processed/
+      - name: Fast tests
+        run: pytest -m "not slow" -q
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t docugraph-demo .
+      - name: Smoke test the container
+        run: |
+          docker run -d -p 8000:8000 --name demo docugraph-demo
+          sleep 5
+          curl -sf http://localhost:8000/api/report | head -c 200
