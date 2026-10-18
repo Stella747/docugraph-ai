@@ -104,6 +104,13 @@ docker run --rm -p 8001:8000 docugraph-demo
 - **Provenance from the first step.** Every section carries document, page and section number, so citations are copied by code.
 - **Evaluation before features.** Each component was measured against an answer key, and negative results are kept in `docs/EVALUATION.md`.
 
+### Report Explanation Quality (Human Review)
+While 9/9 report explanations were automatically verified for numerical grounding, automated verification checks numeric facts rather than narrative direction or domain correctness.
+
+To establish an accurate quality baseline, all 9 finding explanations were evaluated via manual human review using the built-in review workflow:
+- **Human Review Verdict:** **6 of 9 explanations accepted upon manual review** (6 accepted, 3 rejected).
+- **Verification vs. Quality Gap:** Numerical grounding verification achieved 100% (9/9), while human-assessed explanation quality reached 66.7% (6/9).
+
 ## Limitations
 - Synthetic documents, one author, small test sets (n between 9 and 12; one clause is about 8% of a score).
 - Extraction uses a closed list of eight attributes; direction (max/min) comes from a fixed cue-word list that failed on unfamiliar phrasings; severity words must match literally.
@@ -115,3 +122,4 @@ docker run --rm -p 8001:8000 docugraph-demo
 
 ## Roadmap
 Needs-review findings for undecidable pairs; severity aliases per document; a larger model for answers; a third corpus; tracing with Langfuse.
+

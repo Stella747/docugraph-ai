@@ -28,5 +28,5 @@
 | Priority 1 vs Critical missed | Correct (ISS-B6 missed; the contract clause carried no severity word) |
 | Insurance expiry (ISS-B4) missed | Wrong: it was detected |
 | Not predicted | ISS-B3 (insurance shortfall) was missed; all three extracted amounts were correct |
-| 0 of 3 false alarms | 0 of 3 observed; whether the controls were real tests depends on their extracted bounds (check pending) |
-| Extraction and bound layer breaks first | Partly supported: ISS-B3's miss is probably a bound problem (not yet verified); extraction values were correct on every planted clause |
+| 0 of 3 false alarms | 0 of 3 observed; the policy clauses had max bounds with matching severity words, so the controls were real tests |
+| Extraction and bound layer breaks first | Supported: ISS-B3 was missed because the policy clause's bound was extracted as exact; extraction values were correct on every planted clause |
