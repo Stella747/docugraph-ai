@@ -16,21 +16,23 @@ Document-compliance pipeline that turns messy PDFs into a knowledge graph, finds
       <br />
       <b>Compliance Findings Dashboard</b>
     </td>
-    <td width="50%" align="center" valign="top">
-      <img src="docs/img/ui_review.png" alt="Human-in-the-Loop Review" width="100%" />
-      <br />
-      <b>Human-in-the-Loop Review</b>
-    </td>
-  </tr>
-  <!-- Row 2: GraphRAG Q&A Interface centered -->
-  <tr>
     <td colspan="2" align="center" valign="top">
       <img src="docs/img/ui_ask.png" alt="GraphRAG Q&A Interface" width="60%" />
       <br />
       <b>GraphRAG Q&A Interface</b>
     </td>
   </tr>
+  <!-- Row 2: GraphRAG Q&A Interface centered -->
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/img/ui_review.png" alt="Human-in-the-Loop Review" width="100%" />
+      <br />
+      <b>Human-in-the-Loop Review</b>
+    </td>
+  </tr>
 </table>
+
+
 
 ## What it does
 - Ingests digital and scanned PDFs, routing each page to the cheapest parser that works (PyMuPDF, RapidOCR, or OpenCV cleanup then Docling for scanned tables).
