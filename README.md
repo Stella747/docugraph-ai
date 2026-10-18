@@ -6,7 +6,24 @@ Document-compliance pipeline that turns messy PDFs into a knowledge graph, finds
 
 > All documents are **synthetic**. No real contracts were used. Numbers below come from small test sets written by one author; read the limitations before drawing conclusions.
 
-![UI](docs/img/ui.png)
+## User Interface
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/img/ui-dashboard.png" alt="Compliance Findings Dashboard" />
+      <p align="center"><b>Compliance Findings Dashboard</b></p>
+    </td>
+    <td width="50%">
+      <img src="docs/img/ui-review.png" alt="Human Review Interface" />
+      <p align="center"><b>Human-in-the-Loop Review</b></p>
+    </td>
+    <td width="50%">
+      <img src="docs/img/ui-ask.png" alt="GraphRAG Search & Q&A" />
+      <p align="center"><b>GraphRAG Q&A Interface</b></p>
+    </td>
+  </tr>
+</table>
 
 ## What it does
 - Ingests digital and scanned PDFs, routing each page to the cheapest parser that works (PyMuPDF, RapidOCR, or OpenCV cleanup then Docling for scanned tables).
@@ -95,6 +112,7 @@ Demo image (precomputed results; the ask box is disabled there because it needs 
 docker build -t docugraph-demo .
 docker run --rm -p 8001:8000 docugraph-demo
 ```
+CI runs the fast tests and builds the demo image; OCR/Docling tests and all model-based evaluations are run locally.
 
 ## Repository layout
 `src/docugraph/` ingest, retrieval, extract, agents, api · `scripts/` pipeline steps and evaluations · `evaluation/` answer keys and query sets · `docs/EVALUATION.md` full results and limitations · `corpus_b/` second-corpus generator and results · `demo_data/` precomputed demo results · `tests/`.
