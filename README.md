@@ -8,19 +8,26 @@ Document-compliance pipeline that turns messy PDFs into a knowledge graph, finds
 
 ## User Interface
 
-<table>
+<table width="100%">
+  <!-- Row 1: Main Dashboard and Review Interface -->
   <tr>
-    <td width="50%">
-      <img src="docs/img/ui_dashboard.png" alt="Compliance Findings Dashboard" />
-      <p align="center"><b>Compliance Findings Dashboard</b></p>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/img/ui_dashboard.png" alt="Dashboard" width="100%" />
+      <br />
+      <b>Compliance Findings Dashboard</b>
     </td>
-    <td width="50%">
-      <img src="docs/img/ui_review.png" alt="Human Review Interface" />
-      <p align="center"><b>Human-in-the-Loop Review</b></p>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/img/ui_review.png" alt="Human-in-the-Loop Review" width="100%" />
+      <br />
+      <b>Human-in-the-Loop Review</b>
     </td>
-    <td width="50%">
-      <img src="docs/img/ui_ask.png" alt="GraphRAG Search & Q&A" />
-      <p align="center"><b>GraphRAG Q&A Interface</b></p>
+  </tr>
+  <!-- Row 2: GraphRAG Q&A Interface centered -->
+  <tr>
+    <td colspan="2" align="center" valign="top">
+      <img src="docs/img/ui_ask.png" alt="GraphRAG Q&A Interface" width="60%" />
+      <br />
+      <b>GraphRAG Q&A Interface</b>
     </td>
   </tr>
 </table>
