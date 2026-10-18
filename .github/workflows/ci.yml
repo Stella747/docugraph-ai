@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       PYTHONPATH: src
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: pytest -m "not slow" -q
 
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: test
     steps:
       - uses: actions/checkout@v4
