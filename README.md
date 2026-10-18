@@ -58,11 +58,11 @@ Vector search failed on exact tokens in both sets. On the held-out set BM25 alon
 | Corpus | Detected | Citation pages correct | False alarms on controls |
 |---|---|---|---|
 | A (system was built on it) | 7/7 (key extended once after the pipeline found a true violation it omitted) | 16/16 | decoy could not fail (nothing extracted) |
-| B (second corpus, pipeline unchanged, run once) | 4/6 | 10/10 | 0/3 TODO: confirm the controls had max/min bounds |
+| B (second corpus, pipeline unchanged, run once) | 4/6 | 10/10 | 0/3 (policy bounds were max with matching severity words, so the controls were real tests) |
 
-Corpus B misses: a "Priority 1" vs "Critical" severity-word mismatch (severity is matched by literal word, so the pair was never compared), and an insurance shortfall TODO: state the confirmed cause from the bound check, or write "cause not confirmed".
+Corpus B misses: a "Priority 1" vs "Critical" severity-word mismatch (severity is matched by literal word, so the pair was never compared), and an insurance shortfall (the policy clause's bound was extracted as `exact`, so the rule that compares `min` or `max` requirements never evaluated the pair; the extracted amounts were all correct).
 
-**Report agent**: 9/9 explanations passed the number check on the first attempt. Manual review of those 9: TODO accepted / edited / rejected counts from `scripts/review_stats.py` (one reviewer, who is also the author). The number check does not detect wrong reasoning.
+**Report agent**: 9/9 explanations passed the number check on the first attempt. Manual review of these explanations is incomplete (1 of 9 reviewed so far, accepted; one reviewer, who is also the author). The number check does not detect wrong reasoning.
 
 **Ask a question (n=10)**: 4/6 answerable questions answered, 2/4 unanswerable refused; expected clauses were cited in every answered case, but answer correctness was not scored. The two wrong answers came from a rule-based fallback, and in smoke tests the 3B model sometimes refused answerable questions or conflated unrelated clauses. The UI labels these answers accordingly.
 
