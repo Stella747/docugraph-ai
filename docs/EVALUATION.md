@@ -84,7 +84,7 @@ Date phrasings such as "March 31, 2028" were handled. The grounding guard droppe
 ## 4. Report agent (LangGraph: explain, verify, retry, template fallback)
 - 9 of 9 explanations passed the verification check on the first attempt (118 s total on CPU). The check only confirms that every number in an explanation appears in the cited clauses.
 - The retry and fallback paths did not trigger in that run; they are covered by a unit test with a stubbed explainer.
-- Manual review of the explanations (one reviewer, who is also the author) has not been completed: 1 of 9 reviewed so far (accepted). The verification check does not detect wrong reasoning.
+- Manual review of all 9 explanations (one reviewer, who is also the author): **6 accepted, 3 rejected**. Numeric grounding is not the same as narrative correctness; the verification check does not detect inverted reasoning or false-positive rules. Details are in section 5.
 
 ## 5. Report Explanation Evaluation (Human Review)
 
