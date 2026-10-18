@@ -17,7 +17,7 @@ Document-compliance pipeline that turns messy PDFs into a knowledge graph, finds
       <b>Compliance Findings Dashboard</b>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="docs/img/ui_ask.png" alt="GraphRAG Q&A Interface" width="60%" />
+      <img src="docs/img/ui_ask.png" alt="GraphRAG Q&A Interface" width="100%" />
       <br />
       <b>GraphRAG Q&A Interface</b>
     </td>
