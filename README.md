@@ -11,15 +11,15 @@ Document-compliance pipeline that turns messy PDFs into a knowledge graph, finds
 <table>
   <tr>
     <td width="50%">
-      <img src="docs/img/ui-dashboard.png" alt="Compliance Findings Dashboard" />
+      <img src="docs/img/ui_dashboard.png" alt="Compliance Findings Dashboard" />
       <p align="center"><b>Compliance Findings Dashboard</b></p>
     </td>
     <td width="50%">
-      <img src="docs/img/ui-review.png" alt="Human Review Interface" />
+      <img src="docs/img/ui_review.png" alt="Human Review Interface" />
       <p align="center"><b>Human-in-the-Loop Review</b></p>
     </td>
     <td width="50%">
-      <img src="docs/img/ui-ask.png" alt="GraphRAG Search & Q&A" />
+      <img src="docs/img/ui_ask.png" alt="GraphRAG Search & Q&A" />
       <p align="center"><b>GraphRAG Q&A Interface</b></p>
     </td>
   </tr>
